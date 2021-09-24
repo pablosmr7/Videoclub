@@ -68,11 +68,11 @@
             }
             echo "<p><a href='index.php?action=formularioInsertarPeliculas'>Nuevo</a></p>";
             break;
-            /*
-            // --------------------------------- FORMULARIO ALTA DE LIBROS ----------------------------------------
+            
+            // --------------------------------- FORMULARIO ALTA DE PELICULAS ----------------------------------------
 
-        case "formularioInsertarLibros":
-            echo "<h1>Modificación de libros</h1>";
+        case "formularioInsertarPeliculas":
+            echo "<h1>Insercion de peliculas</h1>";
 
             // Creamos el formulario con los campos del libro
             echo "<form action = 'index.php' method = 'get'>
@@ -80,28 +80,31 @@
                     Género:<input type='text' name='genero'><br>
                     País:<input type='text' name='pais'><br>
                     Año:<input type='text' name='ano'><br>
-                    Número de páginas:<input type='text' name='numPaginas'><br>";
+                    Cartel:<input type='text' name='cartel'><br>
+                    <br>";
 
             // Añadimos un selector para el id del autor o autores
             $result = $db->query("SELECT * FROM personas");
             echo "Autores: <select name='autor[]' multiple='true'>";
             while ($fila = $result->fetch_object()) {
-                echo "<option value='" . $fila->idPersona . "'>" . $fila->nombre . " " . $fila->apellido . "</option>";
+                echo "<option value='" . $fila->idPersona . "'>" . $fila->nombre . " " . $fila->apellidos . "</option>";
             }
             echo "</select>";
-            echo "<a href='index.php?action=formularioInsertarAutores'>Añadir nuevo</a><br>";
+            echo "<a href='index.php?action=formularioInsertarActores'>Añadir nuevo</a><br>";
 
             // Finalizamos el formulario
-            echo "  <input type='hidden' name='action' value='insertarLibro'>
+            echo "  <input type='hidden' name='action' value='insertarPelicula'>
 					<input type='submit'>
 				</form>";
             echo "<p><a href='index.php'>Volver</a></p>";
 
             break;
 
+
+            
             // --------------------------------- INSERTAR LIBROS ----------------------------------------
 
-        case "insertarLibro":
+        case "insertarPelicula":
             echo "<h1>Alta de libros</h1>";
 
             // Vamos a procesar el formulario de alta de libros
@@ -110,22 +113,22 @@
             $genero = $_REQUEST["genero"];
             $pais = $_REQUEST["pais"];
             $ano = $_REQUEST["ano"];
-            $numPaginas = $_REQUEST["numPaginas"];
+            $cartel = $_REQUEST["cartel"];
             $autores = $_REQUEST["autor"];
 
             // Lanzamos el INSERT contra la BD.
-            echo "INSERT INTO libros (titulo,genero,pais,ano,numPaginas) VALUES ('$titulo','$genero', '$pais', '$ano', '$numPaginas')";
-            $db->query("INSERT INTO libros (titulo,genero,pais,ano,numPaginas) VALUES ('$titulo','$genero', '$pais', '$ano', '$numPaginas')");
+            echo "INSERT INTO peliculas (titulo,genero,pais,ano,cartel) VALUES ('$titulo','$genero', '$pais', '$ano', '$cartel')";
+            $db->query("INSERT INTO peliculass (titulo,genero,pais,ano,cartel) VALUES ('$titulo','$genero', '$pais', '$ano', '$cartel')");
             if ($db->affected_rows == 1) {
                 // Si la inserción del libro ha funcionado, continuamos insertando en la tabla "escriben"
                 // Tenemos que averiguar qué idLibro se ha asignado al libro que acabamos de insertar
-                $result = $db->query("SELECT MAX(idLibro) AS ultimoIdLibro FROM libros");
-                $idLibro = $result->fetch_object()->ultimoIdLibro;
+                $result = $db->query("SELECT MAX(idPelicula) AS ultimoIdPelicula FROM peliculas");
+                $idPelicula = $result->fetch_object()->ultimoIdPelicula;
                 // Ya podemos insertar todos los autores junto con el libro en "escriben"
                 foreach ($autores as $idAutor) {
-                    $db->query("INSERT INTO escriben(idLibro, idPersona) VALUES('$idLibro', '$idAutor')");
+                    $db->query("INSERT INTO actuan(idPeli, idActor) VALUES('$idPelicula', '$idAutor')");
                 }
-                echo "Libro insertado con éxito";
+                echo "Pelicula insertada con éxito";
             } else {
                 // Si la inserción del libro ha fallado, mostramos mensaje de error
                 echo "Ha ocurrido un error al insertar el libro. Por favor, inténtelo más tarde.";
@@ -133,6 +136,8 @@
             echo "<p><a href='index.php'>Volver</a></p>";
 
             break;
+
+            /*
 
             // --------------------------------- BORRAR LIBROS ----------------------------------------
 
