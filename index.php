@@ -137,26 +137,28 @@
 
             break;
 
-            /*
+            
 
             // --------------------------------- BORRAR LIBROS ----------------------------------------
 
-        case "borrarLibro":
-            echo "<h1>Borrar libros</h1>";
+        case "borrarPelicula":
+            echo "<h1>Borrar Peliculas</h1>";
 
             // Recuperamos el id del libro y lanzamos el DELETE contra la BD
-            $idLibro = $_REQUEST["idLibro"];
-            $db->query("DELETE FROM libros WHERE idLibro = '$idLibro'");
+            $idPelicula = $_REQUEST["idPelicula"];
+            $db->query("DELETE FROM peliculas WHERE idPelicula = '$idPelicula'");
 
             // Mostramos mensaje con el resultado de la operación
             if ($db->affected_rows == 0) {
-                echo "Ha ocurrido un error al borrar el libro. Por favor, inténtelo de nuevo";
+                echo "Ha ocurrido un error al borrar la pelicula. Por favor, inténtelo de nuevo";
             } else {
-                echo "Libro borrado con éxito";
+                echo "pelicula borrada con éxito";
             }
             echo "<p><a href='index.php'>Volver</a></p>";
 
             break;
+
+            /*
 
             // --------------------------------- FORMULARIO MODIFICAR LIBROS ----------------------------------------
 
