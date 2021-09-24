@@ -207,6 +207,7 @@
                 // La consulta ha fallado
                 echo "Error al tratar de recuperar los datos de la base de datos. Por favor, inténtelo más tarde";
             }
+            
             echo "<p><a href='index.php?action=formularioInsertarPeliculas'>Nuevo</a></p>";
             echo "<p><a href='index.php'>Volver</a></p>";
             break;
