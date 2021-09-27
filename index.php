@@ -267,43 +267,41 @@
             break;
 
 
-            /*
+            
             // --------------------------------- MODIFICAR LIBROS ----------------------------------------
 
-        case "modificarLibro":
-            echo "<h1>Modificación de libros</h1>";
+        case "modificarPelicula":
+            echo "<h1>Modificación de Peliculas</h1>";
 
             // Vamos a procesar el formulario de modificación de libros
             // Primero, recuperamos todos los datos del formulario
-            $idLibro = $_REQUEST["idLibro"];
+            $idPelicula = $_REQUEST["idPelicula"];
             $titulo = $_REQUEST["titulo"];
             $genero = $_REQUEST["genero"];
             $pais = $_REQUEST["pais"];
             $ano = $_REQUEST["ano"];
-            $numPaginas = $_REQUEST["numPaginas"];
             $autores = $_REQUEST["autor"];
 
             // Lanzamos el UPDATE contra la base de datos.
-            $db->query("UPDATE libros SET
+            $db->query("UPDATE peliculas SET
 							titulo = '$titulo',
 							genero = '$genero',
 							pais = '$pais',
 							ano = '$ano',
-							numPaginas = '$numPaginas'
-							WHERE idLibro = '$idLibro'");
+							WHERE idPelicula = '$idPelicula'");
 
             if ($db->affected_rows == 1) {
                 // Si la modificación del libro ha funcionado, continuamos actualizando la tabla "escriben".
                 // Primero borraremos todos los registros del libro actual y luego los insertaremos de nuevo
-                $db->query("DELETE FROM escriben WHERE idLibro = '$idLibro'");
+                $db->query("DELETE FROM actuan WHERE idPeli = '$idLibro'");
                 // Ya podemos insertar todos los autores junto con el libro en "escriben"
                 foreach ($autores as $idAutor) {
-                    $db->query("INSERT INTO escriben(idLibro, idPersona) VALUES('$idLibro', '$idAutor')");
+                    $db->query("INSERT INTO actuan(idPeli, idActor) VALUES('$idPelicula', '$idAutor')");
                 }
-                echo "Libro actualizado con éxito";
+                echo "Pelicula actualizada con éxito";
             } else {
                 // Si la modificación del libro ha fallado, mostramos mensaje de error
-                echo "Ha ocurrido un error al modificar el libro. Por favor, inténtelo más tarde.";
+                echo "Ha ocurrido un error al modificar la pelicula. Por favor, inténtelo más tarde.";
             }
             echo "<p><a href='index.php'>Volver</a></p>";
             break;
@@ -315,7 +313,7 @@
             echo "<h1>Error 404: página no encontrada</h1>";
             echo "<a href='index.php'>Volver</a>";
             break;
-            */
+          /*  */
     } // switch
 
     ?>
