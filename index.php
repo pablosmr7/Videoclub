@@ -50,7 +50,7 @@
                         echo "<td>" . $fila->genero . "</td>";
                         echo "<td>" . $fila->pais . "</td>";
                         echo "<td>" . $fila->ano . "</td>";
-                        echo "<td><img src='images/". $fila->cartel .".jpg' alt='foto' width='100' height='150'></td>";
+                        echo "<td><img src='images/". $fila->cartel ."' alt='foto' width='100' height='150'></td>";
                         echo "<td>" . $fila->nombre . "</td>";
                         echo "<td>" . $fila->apellidos . "</td>";
                         echo "<td><a href='index.php?action=formularioModificarPelicula&idPelicula=" . $fila->idPelicula . "'>Modificar</a></td>";
@@ -75,12 +75,12 @@
             echo "<h1>Insercion de peliculas</h1>";
 
             // Creamos el formulario con los campos del libro
-            echo "<form action = 'index.php' method = 'get'>
+            echo "<form enctype='multipart/form-data' action = 'index.php' method = 'post'>
                     Título:<input type='text' name='titulo'><br>
                     Género:<input type='text' name='genero'><br>
                     País:<input type='text' name='pais'><br>
                     Año:<input type='text' name='ano'><br>
-                    Cartel:<input type='text' name='cartel'><br>
+                    Cartel:<input type='file' name='cartel'><br>
                     <br>";
 
             // Añadimos un selector para el id del autor o autores
@@ -102,23 +102,27 @@
 
 
             
-            // --------------------------------- INSERTAR LIBROS ----------------------------------------
+            // --------------------------------- INSERTAR PELICULAS ----------------------------------------
 
         case "insertarPelicula":
-            echo "<h1>Alta de libros</h1>";
+            echo "<h1>Alta de peliculas</h1>";
 
+            $dir_subida = 'C:/xampp/htdocs/peliculas/images/';
+            
             // Vamos a procesar el formulario de alta de libros
             // Primero, recuperamos todos los datos del formulario
             $titulo = $_REQUEST["titulo"];
             $genero = $_REQUEST["genero"];
             $pais = $_REQUEST["pais"];
             $ano = $_REQUEST["ano"];
-            $cartel = $_REQUEST["cartel"];
+            $fichero_subido = $dir_subida . basename($_FILES['cartel']['name']);
+            move_uploaded_file($_FILES['cartel']['tmp_name'], $fichero_subido);
+            echo $fichero_subido;
             $autores = $_REQUEST["autor"];
 
             // Lanzamos el INSERT contra la BD.
-            echo "INSERT INTO peliculas (titulo,genero,pais,ano,cartel) VALUES ('$titulo','$genero', '$pais', '$ano', '$cartel')";
-            $db->query("INSERT INTO peliculas (titulo,genero,pais,ano,cartel) VALUES ('$titulo','$genero', '$pais', '$ano', '$cartel')");
+            echo "INSERT INTO peliculas (titulo,genero,pais,ano,cartel) VALUES ('$titulo','$genero', '$pais', '$ano', '".basename($_FILES['cartel']['name'])."')";
+            $db->query("INSERT INTO peliculas (titulo,genero,pais,ano,cartel) VALUES ('$titulo','$genero', '$pais', '$ano', '".basename($_FILES['cartel']['name'])."')");
             if ($db->affected_rows == 1) {
                 // Si la inserción del libro ha funcionado, continuamos insertando en la tabla "escriben"
                 // Tenemos que averiguar qué idLibro se ha asignado al libro que acabamos de insertar
@@ -293,10 +297,10 @@
             if ($db->affected_rows == 1) {
                 // Si la modificación del libro ha funcionado, continuamos actualizando la tabla "escriben".
                 // Primero borraremos todos los registros del libro actual y luego los insertaremos de nuevo
-                $db->query("DELETE FROM actuan WHERE idPeli = '$idLibro'");
+                $db->query("DELETE FROM actuan WHERE idPeli = '$idPelicula'");
                 // Ya podemos insertar todos los autores junto con el libro en "escriben"
-                foreach ($autores as $idAutor) {
-                    $db->query("INSERT INTO actuan(idPeli, idActor) VALUES('$idPelicula', '$idAutor')");
+                foreach ($autores as $idActor) {
+                    $db->query("INSERT INTO actuan(idPeli, idActor) VALUES('$idPelicula', '$idActor')");
                 }
                 echo "Pelicula actualizada con éxito";
             } else {
