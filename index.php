@@ -207,54 +207,51 @@
                 // La consulta ha fallado
                 echo "Error al tratar de recuperar los datos de la base de datos. Por favor, inténtelo más tarde";
             }
-            
+
             echo "<p><a href='index.php?action=formularioInsertarPeliculas'>Nuevo</a></p>";
             echo "<p><a href='index.php'>Volver</a></p>";
             break;
 
 
-
-
-
-            /*
+            
             // --------------------------------- FORMULARIO MODIFICAR LIBROS ----------------------------------------
 
-        case "formularioModificarLibro":
-            echo "<h1>Modificación de libros</h1>";
+        case "formularioModificarPelicula":
+            echo "<h1>Modificación de peliculas</h1>";
 
             // Recuperamos el id del libro que vamos a modificar y sacamos el resto de sus datos de la BD
-            $idLibro = $_REQUEST["idLibro"];
-            $result = $db->query("SELECT * FROM libros WHERE libros.idLibro = '$idLibro'");
-            $libro = $result->fetch_object();
+            $idPelicula = $_REQUEST["idPelicula"];
+            $result = $db->query("SELECT * FROM peliculas WHERE peliculas.idPelicula = '$idPelicula'");
+            $pelicula = $result->fetch_object();
 
             // Creamos el formulario con los campos del libro
             // y lo rellenamos con los datos que hemos recuperado de la BD
             echo "<form action = 'index.php' method = 'get'>
-				    <input type='hidden' name='idLibro' value='$idLibro'>
-                    Título:<input type='text' name='titulo' value='$libro->titulo'><br>
-                    Género:<input type='text' name='genero' value='$libro->genero'><br>
-                    País:<input type='text' name='pais' value='$libro->pais'><br>
-                    Año:<input type='text' name='ano' value='$libro->ano'><br>
-                    Número de páginas:<input type='text' name='numPaginas' value='$libro->numPaginas'><br>";
+				    <input type='hidden' name='idPelicula' value='$idPelicula'>
+                    Título:<input type='text' name='titulo' value='$pelicula->titulo'><br>
+                    Género:<input type='text' name='genero' value='$pelicula->genero'><br>
+                    País:<input type='text' name='pais' value='$pelicula->pais'><br>
+                    Año:<input type='text' name='ano' value='$pelicula->ano'><br>
+                    Cartel:<input type='text' name='numPaginas' value='$pelicula->cartel'><br>";
 
             // Vamos a añadir un selector para el id del autor o autores.
             // Para que salgan preseleccionados los autores del libro que estamos modificando, vamos a buscar
             // también a esos autores.
             $todosLosAutores = $db->query("SELECT * FROM personas");  // Obtener todos los autores
-            $autoresLibro = $db->query("SELECT idPersona FROM escriben WHERE idLibro = '$idLibro'");             // Obtener solo los autores del libro que estamos buscando
+            $autoresPelicula = $db->query("SELECT idActor FROM actuan WHERE idPeli = '$idPelicula'");             // Obtener solo los autores del libro que estamos buscando
             // Vamos a convertir esa lista de autores del libro en un array de ids de personas
-            $listaAutoresLibro = array();
-            while ($autor = $autoresLibro->fetch_object()) {
-                $listaAutoresLibro[] = $autor->idPersona;
+            $listaAutoresPelicula = array();
+            while ($autor = $autoresPelicula->fetch_object()) {
+                $listaAutoresPelicula[] = $autor->idActor;
             }
 
             // Ya tenemos todos los datos para añadir el selector de autores al formulario
             echo "Autores: <select name='autor[]' multiple size='3'>";
             while ($fila = $todosLosAutores->fetch_object()) {
-                if (in_array($fila->idPersona, $listaAutoresLibro))
-                    echo "<option value='$fila->idPersona' selected>$fila->nombre $fila->apellido</option>";
+                if (in_array($fila->idPersona, $listaAutoresPelicula))
+                    echo "<option value='$fila->idActor' selected>$fila->nombre $fila->apellidos</option>";
                 else
-                    echo "<option value='$fila->idPersona'>$fila->nombre $fila->apellido</option>";
+                    echo "<option value='$fila->idActor'>$fila->nombre $fila->apellidos</option>";
             }
             echo "</select>";
 
@@ -262,13 +259,15 @@
             echo "<a href='index.php?action=formularioInsertarAutores'>Añadir nuevo</a><br>";
 
             // Finalizamos el formulario
-            echo "  <input type='hidden' name='action' value='modificarLibro'>
+            echo "  <input type='hidden' name='action' value='modificarPelicula'>
                     <input type='submit'>
                   </form>";
             echo "<p><a href='index.php'>Volver</a></p>";
 
             break;
 
+
+            /*
             // --------------------------------- MODIFICAR LIBROS ----------------------------------------
 
         case "modificarLibro":
