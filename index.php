@@ -253,9 +253,9 @@
             echo "Autores: <select name='autor[]' multiple size='3'>";
             while ($fila = $todosLosAutores->fetch_object()) {
                 if (in_array($fila->idPersona, $listaAutoresPelicula))
-                    echo "<option value='$fila->idActor' selected>$fila->nombre $fila->apellidos</option>";
+                    echo "<option value='$fila->idPersona' selected>$fila->nombre $fila->apellidos</option>";
                 else
-                    echo "<option value='$fila->idActor'>$fila->nombre $fila->apellidos</option>";
+                    echo "<option value='$fila->idPersona'>$fila->nombre $fila->apellidos</option>";
             }
             echo "</select>";
 
@@ -286,6 +286,9 @@
             $ano = $_REQUEST["ano"];
             $autores = $_REQUEST["autor"];
 
+            //echo( $autores = $_REQUEST["autor"]);
+
+
             // Lanzamos el UPDATE contra la base de datos.
             $db->query("UPDATE peliculas SET
 							titulo = '$titulo',
@@ -294,20 +297,24 @@
 							ano = '$ano',
 							WHERE idPelicula = '$idPelicula'");
 
-            if ($db->affected_rows == 1) {
+           
                 // Si la modificación del libro ha funcionado, continuamos actualizando la tabla "escriben".
-                // Primero borraremos todos los registros del libro actual y luego los insertaremos de nuevo
+
+               echo ("DELETE FROM actuan WHERE idPeli = '$idPelicula'");
+
                 $db->query("DELETE FROM actuan WHERE idPeli = '$idPelicula'");
+
                 // Ya podemos insertar todos los autores junto con el libro en "escriben"
                 foreach ($autores as $idActor) {
-                    $db->query("INSERT INTO actuan(idPeli, idActor) VALUES('$idPelicula', '$idActor')");
+
+                   /* echo("$idActor");
+                    echo("INSERT INTO actuan(idPeli, idActor) VALUES('$idPelicula', '$idActor'");*/
+
+                    $db->query("INSERT INTO actuan(idPeli, idActor) VALUES('$idPelicula', '$idActor)' )");
                 }
                 echo "Pelicula actualizada con éxito";
-            } else {
-                // Si la modificación del libro ha fallado, mostramos mensaje de error
-                echo "Ha ocurrido un error al modificar la pelicula. Por favor, inténtelo más tarde.";
-            }
-            echo "<p><a href='index.php'>Volver</a></p>";
+           
+            echo "</br><p><a href='index.php'>Volver</a></p>";
             break;
 
 
