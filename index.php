@@ -117,11 +117,11 @@
             $ano = $_REQUEST["ano"];
             $fichero_subido = $dir_subida . basename($_FILES['cartel']['name']);
             move_uploaded_file($_FILES['cartel']['tmp_name'], $fichero_subido);
-            echo $fichero_subido;
+            //echo $fichero_subido;
             $autores = $_REQUEST["autor"];
 
             // Lanzamos el INSERT contra la BD.
-            echo "INSERT INTO peliculas (titulo,genero,pais,ano,cartel) VALUES ('$titulo','$genero', '$pais', '$ano', '".basename($_FILES['cartel']['name'])."')";
+            //echo "INSERT INTO peliculas (titulo,genero,pais,ano,cartel) VALUES ('$titulo','$genero', '$pais', '$ano', '".basename($_FILES['cartel']['name'])."')";
             $db->query("INSERT INTO peliculas (titulo,genero,pais,ano,cartel) VALUES ('$titulo','$genero', '$pais', '$ano', '".basename($_FILES['cartel']['name'])."')");
             if ($db->affected_rows == 1) {
                 // Si la inserción del libro ha funcionado, continuamos insertando en la tabla "escriben"
