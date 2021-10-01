@@ -305,13 +305,21 @@
             $autores = $_REQUEST["autor"];
 
 
+            echo "UPDATE peliculas SET
+            titulo = '$titulo',
+            genero = '$genero',
+            pais = '$pais',
+            ano = '$ano'
+            WHERE idPelicula = '$idPelicula'";
+
+
 
             // Lanzamos el UPDATE contra la base de datos.
             $db->query("UPDATE peliculas SET
 							titulo = '$titulo',
 							genero = '$genero',
 							pais = '$pais',
-							ano = '$ano',
+							ano = '$ano'
 							WHERE idPelicula = '$idPelicula'");
 
            
@@ -331,6 +339,11 @@
             echo "</br><p><a href='index.php'>Volver</a></p>";
             break;
 
+
+
+
+
+//---------------------------- AQUI COMIENZA EL CRUD PERSONAS ¡ACHTUNG! HECHO DEPRISA Y CORRIENDO----------------------------------
 
 
                 // --------------------------------- MOSTRAR PERSONAS ----------------------------------------
@@ -452,7 +465,7 @@
             break;
 
 
-             // --------------------------------- BORRAR PELICULAS ----------------------------------------
+             // --------------------------------- BORRAR PERSONAS ----------------------------------------
 
         case "borrarActor":
             echo "<h1>Borrar Actor</h1>";
