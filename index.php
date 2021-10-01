@@ -248,13 +248,14 @@
 
             // Creamos el formulario con los campos de la pelicula
             // y lo rellenamos con los datos que hemos recuperado de la BD
-            echo "<form action = 'index.php' method = 'get'>
+            echo "<form action = 'index.php' method = 'post'>
 				    <input type='hidden' name='idPelicula' value='$idPelicula'>
                     Título:<input type='text' name='titulo' value='$pelicula->titulo'><br>
                     Género:<input type='text' name='genero' value='$pelicula->genero'><br>
                     País:<input type='text' name='pais' value='$pelicula->pais'><br>
-                    Año:<input type='text' name='ano' value='$pelicula->ano'><br>
-                    Cartel:<input type='text' name='numPaginas' value='$pelicula->cartel'><br>";
+                    Año:<input type='text' name='ano' value='$pelicula->ano'><br>";
+                // La modificacion de imagen rompe la app :(    
+                //   Cartel:<input type='file' name='cartel' value='$pelicula->cartel'><br>;
 
             // Vamos a añadir un selector para el id del reparto.
             // Para que salgan preseleccionados los actores que estamos modificando, vamos a buscar
@@ -297,20 +298,18 @@
 
             // Vamos a procesar el formulario de modificación de las peliculas
             // Primero, recuperamos todos los datos del formulario
+
+            $dir_subida = 'C:/xampp/htdocs/peliculas/images/';
+
             $idPelicula = $_REQUEST["idPelicula"];
             $titulo = $_REQUEST["titulo"];
             $genero = $_REQUEST["genero"];
             $pais = $_REQUEST["pais"];
             $ano = $_REQUEST["ano"];
+            //$fichero_subido = $dir_subida . basename($_FILES['cartel']['name']);
+            //move_uploaded_file($_FILES['cartel']['tmp_name'], $fichero_subido);
             $autores = $_REQUEST["autor"];
 
-
-            echo "UPDATE peliculas SET
-            titulo = '$titulo',
-            genero = '$genero',
-            pais = '$pais',
-            ano = '$ano'
-            WHERE idPelicula = '$idPelicula'";
 
 
 
@@ -320,6 +319,7 @@
 							genero = '$genero',
 							pais = '$pais',
 							ano = '$ano'
+                           
 							WHERE idPelicula = '$idPelicula'");
 
            
